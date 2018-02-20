@@ -26,7 +26,7 @@ def recognize(models: dict, test_set: SinglesData):
         x, lengths = test_set.get_item_Xlengths(index)
 
         probs = {}
-        guess = float('-inf')
+        guess = (float('-inf'), None)
 
         for word, hmm in models.items():
             try:
@@ -36,10 +36,10 @@ def recognize(models: dict, test_set: SinglesData):
 
             probs[word] = score
 
-            if score > guess:
-                guess = score
+            if score > guess[0]:
+                guess = (score, word)
 
         probabilities.append(probs)
-        guesses.append(guess)
+        guesses.append(guess[1])
 
     return probabilities, guesses
